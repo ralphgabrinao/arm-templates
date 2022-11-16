@@ -1,0 +1,81 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "communicationServiceName": {
+            "type": "string"
+        },
+        "emailCommunicationServiceName": {
+            "type": "string"
+        },
+        "communicationServiceDataLocation": {
+            "type": "string",
+            "allowedValues": [
+              "Africa",
+              "Asia Pacific",
+              "Australia",
+              "Brazil",
+              "Canada",
+              "Europe",
+              "France",
+              "Germany",
+              "India",
+              "Japan",
+              "Korea",
+              "Norway",
+              "Switzerland",
+              "UAE",
+              "UK",
+              "United States"
+            ],
+            "defaultValue": "United States",
+            "metadata": {
+              "description": "The location where the communication service stores its data at rest."
+            }
+        }
+    },
+    "variables": {
+        "location": "global",
+        "emailCommunicationServiceDomainName": "[concat(parameters('emailCommunicationServiceName'), '/AzureManagedDomain')]"
+    },
+    "resources": [
+        {
+			"type": "Microsoft.Communication/emailServices",
+            "apiVersion": "2021-10-01-preview",
+            "name": "[parameters('emailCommunicationServiceName')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "dataLocation": "[parameters('communicationServiceDataLocation')]"
+            }
+        },
+        {
+            "type": "Microsoft.Communication/emailServices/domains",
+            "apiVersion": "2022-07-01-preview",
+            "name": "[variables('emailCommunicationServiceDomainName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Communication/emailServices', parameters('emailCommunicationServiceName'))]"
+            ],
+            "location": "[variables('location')]",
+            "properties": {
+              "domainManagement": "AzureManaged",
+              "userEngagementTracking": "Disabled",
+              "validSenderUsernames": {}
+            }
+        },
+        {
+            "type": "Microsoft.Communication/communicationServices",
+            "apiVersion": "2022-07-01-preview",
+            "name": "[parameters('communicationServiceName')]",
+            "dependsOn": [
+				"[resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')]"
+            ],
+            "location": "[variables('location')]",
+            "properties": {
+                "dataLocation": "[parameters('communicationServiceDataLocation')]",
+                "linkedDomains": [
+                    "[resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')]"
+                ]
+            }
+        }
+    ]
+}
