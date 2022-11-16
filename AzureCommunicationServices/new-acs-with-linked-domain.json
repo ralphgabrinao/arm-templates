@@ -40,7 +40,7 @@
     },
     "resources": [
         {
-			"type": "Microsoft.Communication/emailServices",
+            "type": "Microsoft.Communication/emailServices",
             "apiVersion": "2021-10-01-preview",
             "name": "[parameters('emailCommunicationServiceName')]",
             "location": "[variables('location')]",
@@ -67,7 +67,7 @@
             "apiVersion": "2022-07-01-preview",
             "name": "[parameters('communicationServiceName')]",
             "dependsOn": [
-				"[resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')]"
+                "[resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')]"
             ],
             "location": "[variables('location')]",
             "properties": {
