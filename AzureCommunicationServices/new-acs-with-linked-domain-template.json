@@ -77,5 +77,19 @@
                 ]
             }
         }
-    ]
+    ],
+    "outputs": {
+        "mailFromSenderDomain": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).mailFromSenderDomain]"
+        },
+        "validSenderUsernames": {
+            "type": "object",
+            "value": "[reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).validSenderUsernames]"
+        },
+        "mailFrom": {
+            "type": "string",
+            "value": "[concat(reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).validSenderUsernames.DoNotReply, '@', reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).mailFromSenderDomain)]"
+        }
+    }
 }
