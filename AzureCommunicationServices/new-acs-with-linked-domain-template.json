@@ -79,9 +79,9 @@
         }
     ],
     "outputs": {
-        "mailFromSenderDomain": {
+        "fromSenderDomain": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).mailFromSenderDomain]"
+            "value": "[reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).fromSenderDomain]"
         },
         "validSenderUsernames": {
             "type": "object",
@@ -89,7 +89,7 @@
         },
         "mailFrom": {
             "type": "string",
-            "value": "[concat(reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).validSenderUsernames.DoNotReply, '@', reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).mailFromSenderDomain)]"
+            "value": "[concat(reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).validSenderUsernames.DoNotReply, '@', reference(resourceId('Microsoft.Communication/emailServices/domains', parameters('emailCommunicationServiceName'), 'AzureManagedDomain')).fromSenderDomain)]"
         }
     }
 }
